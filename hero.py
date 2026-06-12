@@ -2,19 +2,32 @@ import base64
 import os
 
 def get_hero_image_base64() -> str:
-    img_path = os.path.join(os.path.dirname(__file__), "assets", "hero.jpg")
-    if not os.path.exists(img_path):
+    assets_dir = os.path.join(os.path.dirname(__file__), "assets")
+    if not os.path.isdir(assets_dir):
         return ""
-    with open(img_path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
+    for fname in os.listdir(assets_dir):
+        if fname.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+            with open(os.path.join(assets_dir, fname), "rb") as f:
+                ext = fname.rsplit(".", 1)[-1].lower()
+                if ext == "jpg":
+                    ext = "jpeg"
+                return base64.b64encode(f.read()).decode(), ext
+    return "", ""
+
+
+def _get_image_data() -> tuple[str, str]:
+    result = get_hero_image_base64()
+    if isinstance(result, tuple):
+        return result
+    return "", ""
 
 
 def get_hero_html() -> str:
-    b64 = get_hero_image_base64()
+    b64, ext = _get_image_data()
     if not b64:
         bg_style = "background: linear-gradient(135deg, #0a1f0d, #1a3a1e);"
     else:
-        bg_style = f"background: url('data:image/jpeg;base64,{b64}') center/cover no-repeat;"
+        bg_style = f"background: url('data:image/{ext};base64,{b64}') center/cover no-repeat;"
 
     return f"""
 <div style="
