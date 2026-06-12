@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 from llm import get_response
 from knowledge_base import SAMPLE_QUESTIONS
 from hero import get_hero_html, PAGE_CSS
@@ -83,7 +82,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if not st.session_state.messages:
-    components.html(get_hero_html(), height=480, scrolling=False)
+    st.html(get_hero_html())
 
     st.markdown("")
     st.markdown("#### Who is this for?")
