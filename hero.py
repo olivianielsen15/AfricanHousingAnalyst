@@ -16,150 +16,120 @@ def get_hero_image_base64() -> tuple[str, str]:
     return "", ""
 
 
-def get_hero_html() -> str:
+def get_page_bg_css() -> str:
     b64, ext = get_hero_image_base64()
     if b64:
-        bg_style = f"background: url('data:image/{ext};base64,{b64}') center/cover no-repeat;"
+        bg = f"url('data:image/{ext};base64,{b64}') center/cover no-repeat fixed"
     else:
-        bg_style = "background: linear-gradient(135deg, #0a1f0d, #122a15, #1a3a1e);"
+        bg = "linear-gradient(135deg, #0a1f0d, #122a15, #1a3a1e)"
 
     return f"""
-<div style="
-    {bg_style}
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    min-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-">
-    <!-- Dark overlay -->
-    <div style="
-        position: absolute; inset: 0;
-        background: radial-gradient(
-            ellipse at center,
-            rgba(0,0,0,0.45) 0%,
-            rgba(0,0,0,0.35) 40%,
-            rgba(0,0,0,0.5) 100%
-        );
-    "></div>
-
-    <!-- Content centered -->
-    <div style="
-        position: relative; z-index: 1;
-        text-align: center;
-        max-width: 680px;
-        padding: 2rem;
-    ">
-        <p style="
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: #a5d6a7;
-            margin: 0 0 0.75rem 0;
-            text-shadow: 0 1px 6px rgba(0,0,0,0.6);
-        ">Housing Intelligence for Africa</p>
-
-        <h1 style="
-            font-family: 'Inter', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin: 0 0 0.75rem 0;
-            line-height: 1.1;
-            text-shadow: 0 3px 15px rgba(0,0,0,0.5);
-        ">African Housing<br>Analyst</h1>
-
-        <p style="
-            font-family: 'Inter', sans-serif;
-            font-size: 1.05rem;
-            color: rgba(255,255,255,0.8);
-            margin: 0 0 2rem 0;
-            line-height: 1.6;
-            text-shadow: 0 1px 8px rgba(0,0,0,0.5);
-        ">Data-driven insights on housing markets, policy, finance &amp; investment across 54 African countries</p>
-
-        <!-- Prompt box -->
-        <div style="
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 14px;
-            padding: 1.25rem 1.5rem;
-            text-align: left;
-        ">
-            <p style="
-                font-family: 'Inter', sans-serif;
-                font-size: 0.95rem;
-                color: rgba(255,255,255,0.95);
-                margin: 0 0 1rem 0;
-                font-weight: 500;
-            ">Try asking:</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                <span style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.78rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.12);">What are the risks of a housing PPP in Nigeria?</span>
-                <span style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.78rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.12);">Feasibility analysis for 500 units in Kenya</span>
-                <span style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.78rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.12);">Compare mortgage markets in East Africa</span>
-                <span style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); padding: 0.35rem 0.75rem; border-radius: 10px; font-size: 0.78rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.12);">How does rent-to-own work?</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom bar -->
-    <div style="
-        position: absolute; bottom: 0; left: 0; right: 0;
-        display: flex; justify-content: center; gap: 2.5rem;
-        padding: 1rem;
-        background: rgba(0,0,0,0.3);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-    ">
-        <div style="text-align: center;">
-            <div style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff;">54</div>
-            <div style="font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5);">Countries</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff;">~160M</div>
-            <div style="font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5);">Housing deficit</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff;">&lt;20%</div>
-            <div style="font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5);">Affordability</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff;">Live</div>
-            <div style="font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5);">World Bank data</div>
-        </div>
-    </div>
-</div>
-"""
-
-
-PAGE_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; }}
 
-.block-container { padding-top: 1rem !important; }
+/* Full-page background image */
+[data-testid="stAppViewContainer"] {{
+    background: {bg};
+}}
 
-.chat-header {
-    font-size: 1.6rem; font-weight: 700; color: #1a5632;
-    margin-bottom: 0.5rem; padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e8f5e9;
-}
+/* Dark overlay on main area */
+[data-testid="stAppViewContainer"]::before {{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
+    pointer-events: none;
+}}
 
-.sidebar-logo { text-align: center; padding: 0.5rem 0; }
-.sidebar-logo h2 { color: #1a5632; margin: 0.25rem 0 0 0; font-size: 1.2rem; font-weight: 700; }
-.sidebar-section { background: #f8f9fa; border-radius: 10px; padding: 1rem; margin-bottom: 0.75rem; }
-.sidebar-section h4 { margin-top: 0; color: #1a5632; font-size: 0.9rem; }
-.sidebar-disclaimer { text-align: center; padding-top: 0.75rem; }
-.sidebar-disclaimer p { font-size: 0.73rem; color: #999; line-height: 1.4; }
+/* Make main content sit above overlay */
+.block-container {{
+    position: relative;
+    z-index: 1;
+    padding-top: 2rem !important;
+    max-width: 800px !important;
+}}
 
-div[data-testid="stChatMessage"] { border-radius: 12px; }
+/* Sidebar styling */
+section[data-testid="stSidebar"] {{
+    background: rgba(255,255,255,0.97);
+}}
+
+/* Chat messages - frosted glass */
+div[data-testid="stChatMessage"] {{
+    background: rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 14px !important;
+    color: #fff !important;
+}}
+
+div[data-testid="stChatMessage"] p,
+div[data-testid="stChatMessage"] li,
+div[data-testid="stChatMessage"] h1,
+div[data-testid="stChatMessage"] h2,
+div[data-testid="stChatMessage"] h3,
+div[data-testid="stChatMessage"] h4,
+div[data-testid="stChatMessage"] td,
+div[data-testid="stChatMessage"] th,
+div[data-testid="stChatMessage"] strong,
+div[data-testid="stChatMessage"] span {{
+    color: rgba(255,255,255,0.92) !important;
+}}
+
+/* Chat input styling */
+div[data-testid="stChatInput"] {{
+    background: transparent !important;
+}}
+
+div[data-testid="stChatInput"] textarea {{
+    background: rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    border-radius: 14px !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+}}
+
+div[data-testid="stChatInput"] textarea::placeholder {{
+    color: rgba(255,255,255,0.5) !important;
+}}
+
+/* Spinner */
+div[data-testid="stSpinner"] p {{ color: rgba(255,255,255,0.7) !important; }}
+
+/* Sidebar internals */
+.sidebar-logo {{ text-align: center; padding: 0.5rem 0; }}
+.sidebar-logo h2 {{ color: #1a5632; margin: 0.25rem 0 0 0; font-size: 1.2rem; font-weight: 700; }}
+.sidebar-section {{ background: #f8f9fa; border-radius: 10px; padding: 1rem; margin-bottom: 0.75rem; }}
+.sidebar-section h4 {{ margin-top: 0; color: #1a5632; font-size: 0.9rem; }}
+.sidebar-disclaimer {{ text-align: center; padding-top: 0.75rem; }}
+.sidebar-disclaimer p {{ font-size: 0.73rem; color: #999; line-height: 1.4; }}
 </style>
+"""
+
+
+TITLE_HTML = """
+<div style="text-align: center; margin-bottom: 2rem;">
+    <h1 style="
+        font-family: 'Inter', sans-serif;
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.1;
+        text-shadow: 0 3px 20px rgba(0,0,0,0.5);
+    ">African Housing Analyst</h1>
+    <p style="
+        font-family: 'Inter', sans-serif;
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.75);
+        margin: 0;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    ">Ask me anything about housing in Africa</p>
+</div>
 """

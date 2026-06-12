@@ -1,15 +1,14 @@
 import streamlit as st
 from llm import get_response
-from knowledge_base import SAMPLE_QUESTIONS
-from hero import get_hero_html, PAGE_CSS
+from hero import get_page_bg_css, TITLE_HTML
 
 st.set_page_config(
     page_title="African Housing Analyst",
     page_icon="\U0001f3e0",
-    layout="wide",
+    layout="centered",
 )
 
-st.markdown(PAGE_CSS, unsafe_allow_html=True)
+st.markdown(get_page_bg_css(), unsafe_allow_html=True)
 
 
 def get_api_key() -> str:
@@ -81,8 +80,7 @@ with st.sidebar:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if not st.session_state.messages:
-    st.markdown(get_hero_html(), unsafe_allow_html=True)
+st.markdown(TITLE_HTML, unsafe_allow_html=True)
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
