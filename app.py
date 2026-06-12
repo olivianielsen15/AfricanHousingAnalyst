@@ -84,66 +84,11 @@ if "messages" not in st.session_state:
 if not st.session_state.messages:
     st.markdown(get_hero_html(), unsafe_allow_html=True)
 
-    st.markdown("")
-    st.markdown("#### Who is this for?")
-    cols = st.columns(3)
-    with cols[0]:
-        st.markdown(
-            """
-            <div class="audience-card-v2">
-                <div class="card-icon">\U0001f4bc</div>
-                <h4>Investors</h4>
-                <p>Assess housing market opportunities, understand risks, and compare
-                investment potential across African countries and cities.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with cols[1]:
-        st.markdown(
-            """
-            <div class="audience-card-v2">
-                <div class="card-icon">\U0001f3db️</div>
-                <h4>Policymakers</h4>
-                <p>Design evidence-based housing policies, learn from successful programs
-                in peer countries, and understand affordability dynamics.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with cols[2]:
-        st.markdown(
-            """
-            <div class="audience-card-v2">
-                <div class="card-icon">\U0001f527</div>
-                <h4>Practitioners</h4>
-                <p>Get guidance on construction technologies, financing models,
-                community engagement, and housing delivery strategies.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("")
-    st.markdown("#### Try asking:")
-    cols = st.columns(2)
-    for i, q in enumerate(SAMPLE_QUESTIONS):
-        col = cols[i % 2]
-        with col:
-            if st.button(q, key=f"sample_{i}", use_container_width=True):
-                st.session_state.messages.append({"role": "user", "content": q})
-                st.rerun()
-else:
-    st.markdown(
-        '<div class="chat-header">\U0001f30d African Housing Analyst</div>',
-        unsafe_allow_html=True,
-    )
-
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-if prompt := st.chat_input("Ask about housing in Africa..."):
+if prompt := st.chat_input("Ask me anything about housing in Africa..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
