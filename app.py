@@ -34,13 +34,24 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+def get_api_key() -> str:
+    try:
+        return st.secrets["ANTHROPIC_API_KEY"]
+    except (KeyError, FileNotFoundError):
+        return ""
+
+secrets_key = get_api_key()
+
 with st.sidebar:
-    st.markdown("### Settings")
-    api_key = st.text_input(
-        "Anthropic API Key",
-        type="password",
-        help="Get your key at console.anthropic.com",
-    )
+    if not secrets_key:
+        st.markdown("### Settings")
+        api_key = st.text_input(
+            "Anthropic API Key",
+            type="password",
+            help="Get your key at console.anthropic.com",
+        )
+    else:
+        api_key = secrets_key
 
     st.divider()
     st.markdown("### About")
