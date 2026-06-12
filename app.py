@@ -1,7 +1,8 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from llm import get_response
 from knowledge_base import SAMPLE_QUESTIONS
-from hero import HERO_HTML, HERO_CSS
+from hero import get_hero_html, PAGE_CSS
 
 st.set_page_config(
     page_title="African Housing Analyst",
@@ -9,7 +10,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.markdown(HERO_CSS, unsafe_allow_html=True)
+st.markdown(PAGE_CSS, unsafe_allow_html=True)
 
 
 def get_api_key() -> str:
@@ -82,7 +83,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if not st.session_state.messages:
-    st.markdown(HERO_HTML, unsafe_allow_html=True)
+    components.html(get_hero_html(), height=480, scrolling=False)
 
     st.markdown("")
     st.markdown("#### Who is this for?")
