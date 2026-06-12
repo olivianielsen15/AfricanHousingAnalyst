@@ -39,9 +39,9 @@ with st.sidebar:
         <div class="sidebar-section">
         <h4>\U0001f4ca Data Sources</h4>
 
-        **CAHF** — Housing finance indicators, affordability benchmarks, and country profiles from Africa's leading housing research centre
+        **CAHF** — Housing finance indicators, affordability benchmarks, and country profiles
 
-        **World Bank** — Live macroeconomic data including GDP, urbanization, poverty, and infrastructure metrics
+        **World Bank** — Live macroeconomic data, housing program research, and policy toolkits
 
         **Expert Knowledge** — Best practices from housing programs across the continent
         </div>
@@ -54,7 +54,7 @@ with st.sidebar:
         <div class="sidebar-section">
         <h4>\U0001f30d Coverage</h4>
 
-        Housing market data and analysis for all **54 African countries** with deep profiles on key markets including Nigeria, Kenya, South Africa, Ghana, Ethiopia, Morocco, Rwanda, Tanzania, and more.
+        Housing market data and analysis for all **54 African countries**, including housing finance, PPPs, rent-to-own, subsidies, informal housing, and more.
         </div>
         """,
         unsafe_allow_html=True,
@@ -82,7 +82,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if not st.session_state.messages:
-    st.html(get_hero_html())
+    st.markdown(get_hero_html(), unsafe_allow_html=True)
 
     st.markdown("")
     st.markdown("#### Who is this for?")
