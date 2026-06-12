@@ -1,6 +1,6 @@
 import streamlit as st
 from llm import get_response
-from hero import get_page_bg_css, TITLE_HTML
+from hero import get_hero_image_path, PAGE_CSS
 
 st.set_page_config(
     page_title="African Housing Analyst",
@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered",
 )
 
-st.markdown(get_page_bg_css(), unsafe_allow_html=True)
+st.markdown(PAGE_CSS, unsafe_allow_html=True)
 
 
 def get_api_key() -> str:
@@ -80,7 +80,19 @@ with st.sidebar:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-st.markdown(TITLE_HTML, unsafe_allow_html=True)
+if not st.session_state.messages:
+    img_path = get_hero_image_path()
+    if img_path:
+        st.image(img_path, use_container_width=True)
+
+    st.markdown(
+        '<h1 class="hero-title">African Housing Analyst</h1>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<p class="hero-sub">Ask me anything about housing markets, policy, finance &amp; investment across Africa</p>',
+        unsafe_allow_html=True,
+    )
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
