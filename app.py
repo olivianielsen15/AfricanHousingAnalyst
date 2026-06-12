@@ -1,6 +1,7 @@
 import streamlit as st
 from llm import get_response
 from knowledge_base import SAMPLE_QUESTIONS
+from hero import HERO_HTML, HERO_CSS
 
 st.set_page_config(
     page_title="African Housing Analyst",
@@ -8,98 +9,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
-
-    .main-header {
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: #1a5632;
-        margin-bottom: 0;
-        line-height: 1.2;
-    }
-    .sub-header {
-        font-size: 1.15rem;
-        color: #555;
-        margin-top: 0.25rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .hero-section {
-        background: linear-gradient(135deg, #f0f7f2 0%, #e8f5e9 50%, #fff8e1 100%);
-        border-radius: 16px;
-        padding: 2rem 2rem 1.5rem 2rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid #c8e6c9;
-    }
-    .hero-title {
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: #1a5632;
-        margin-bottom: 0.25rem;
-    }
-    .hero-subtitle {
-        font-size: 1.15rem;
-        color: #555;
-        margin-bottom: 1rem;
-    }
-    .hero-desc {
-        font-size: 0.95rem;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .audience-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1.25rem;
-        border: 1px solid #e0e0e0;
-        height: 100%;
-    }
-    .audience-card h4 {
-        color: #1a5632;
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-    }
-    .audience-card p {
-        color: #666;
-        font-size: 0.9rem;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    .data-badge {
-        display: inline-block;
-        background: #e8f5e9;
-        color: #2e7d32;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .sidebar-section {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    div[data-testid="stChatMessage"] {
-        border-radius: 12px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown(HERO_CSS, unsafe_allow_html=True)
 
 
 def get_api_key() -> str:
@@ -114,9 +24,9 @@ api_key = get_api_key()
 with st.sidebar:
     st.markdown(
         """
-        <div style="text-align: center; padding: 0.5rem 0 1rem 0;">
+        <div class="sidebar-logo">
             <span style="font-size: 2.5rem;">\U0001f3e0</span>
-            <h2 style="color: #1a5632; margin: 0.25rem 0 0 0;">African Housing<br>Analyst</h2>
+            <h2>African Housing<br>Analyst</h2>
         </div>
         """,
         unsafe_allow_html=True,
@@ -127,7 +37,7 @@ with st.sidebar:
     st.markdown(
         """
         <div class="sidebar-section">
-        <h4 style="margin-top:0; color: #1a5632;">\U0001f4ca Data Sources</h4>
+        <h4>\U0001f4ca Data Sources</h4>
 
         **CAHF** — Housing finance indicators, affordability benchmarks, and country profiles from Africa's leading housing research centre
 
@@ -142,7 +52,7 @@ with st.sidebar:
     st.markdown(
         """
         <div class="sidebar-section">
-        <h4 style="margin-top:0; color: #1a5632;">\U0001f30d Coverage</h4>
+        <h4>\U0001f30d Coverage</h4>
 
         Housing market data and analysis for all **54 African countries** with deep profiles on key markets including Nigeria, Kenya, South Africa, Ghana, Ethiopia, Morocco, Rwanda, Tanzania, and more.
         </div>
@@ -158,8 +68,8 @@ with st.sidebar:
 
     st.markdown(
         """
-        <div style="text-align: center; padding-top: 1rem;">
-            <p style="font-size: 0.75rem; color: #999;">
+        <div class="sidebar-disclaimer">
+            <p>
                 Powered by AI. Responses are informational and should be
                 verified with primary sources for decision-making.
             </p>
@@ -168,39 +78,21 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if not st.session_state.messages:
-    st.markdown(
-        """
-        <div class="hero-section">
-            <div class="hero-title">\U0001f30d African Housing Analyst</div>
-            <div class="hero-subtitle">AI-powered insights on housing markets, policy, and investment across Africa</div>
-            <div class="hero-desc">
-                Ask questions about housing affordability, mortgage markets, construction costs,
-                urban development, land tenure, housing policy, and investment opportunities
-                across the continent. Backed by CAHF research and live World Bank data.
-            </div>
-            <div style="margin-top: 1rem;">
-                <span class="data-badge">54 Countries</span>
-                <span class="data-badge">Live World Bank Data</span>
-                <span class="data-badge">CAHF Research</span>
-                <span class="data-badge">Policy Best Practices</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(HERO_HTML, unsafe_allow_html=True)
 
+    st.markdown("")
     st.markdown("#### Who is this for?")
     cols = st.columns(3)
     with cols[0]:
         st.markdown(
             """
-            <div class="audience-card">
-                <h4>\U0001f4bc Investors</h4>
+            <div class="audience-card-v2">
+                <div class="card-icon">\U0001f4bc</div>
+                <h4>Investors</h4>
                 <p>Assess housing market opportunities, understand risks, and compare
                 investment potential across African countries and cities.</p>
             </div>
@@ -210,8 +102,9 @@ if not st.session_state.messages:
     with cols[1]:
         st.markdown(
             """
-            <div class="audience-card">
-                <h4>\U0001f3db Policymakers</h4>
+            <div class="audience-card-v2">
+                <div class="card-icon">\U0001f3db️</div>
+                <h4>Policymakers</h4>
                 <p>Design evidence-based housing policies, learn from successful programs
                 in peer countries, and understand affordability dynamics.</p>
             </div>
@@ -221,8 +114,9 @@ if not st.session_state.messages:
     with cols[2]:
         st.markdown(
             """
-            <div class="audience-card">
-                <h4>\U0001f527 Practitioners</h4>
+            <div class="audience-card-v2">
+                <div class="card-icon">\U0001f527</div>
+                <h4>Practitioners</h4>
                 <p>Get guidance on construction technologies, financing models,
                 community engagement, and housing delivery strategies.</p>
             </div>
@@ -241,7 +135,7 @@ if not st.session_state.messages:
                 st.rerun()
 else:
     st.markdown(
-        '<p class="main-header">\U0001f30d African Housing Analyst</p>',
+        '<div class="chat-header">\U0001f30d African Housing Analyst</div>',
         unsafe_allow_html=True,
     )
 
