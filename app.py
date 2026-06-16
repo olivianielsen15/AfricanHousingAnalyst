@@ -107,7 +107,12 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     if not api_key:
         with st.chat_message("assistant"):
             st.error(
-                "This service is temporarily unavailable. Please try again later."
+                "No API key configured. The site administrator needs to add the ANTHROPIC_API_KEY in Streamlit Cloud Settings → Secrets."
+            )
+    elif not api_key.startswith("sk-ant-"):
+        with st.chat_message("assistant"):
+            st.error(
+                "The API key format looks incorrect. It should start with 'sk-ant-'. Please check the Streamlit Cloud Secrets configuration."
             )
     else:
         with st.chat_message("assistant"):
@@ -124,17 +129,25 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                         st.warning(
                             "The service is experiencing high demand. Please wait a moment and try again."
                         )
-                    elif "authentication" in error_msg.lower() or "api key" in error_msg.lower() or "401" in error_msg:
+                    elif "authentication" in error_msg.lower() or "api key" in error_msg.lower() or "invalid x-api-key" in error_msg.lower() or "401" in error_msg:
                         st.error(
-                            "API key issue. Please contact the site administrator."
+                            "The API key is invalid or has been revoked. Please update it in Streamlit Cloud Settings → Secrets."
                         )
                     elif "credit" in error_msg.lower() or "billing" in error_msg.lower() or "402" in error_msg:
                         st.error(
-                            "The service is temporarily out of capacity. Please try again later."
+                            "Your Anthropic account has no credits. Please add credits at console.anthropic.com."
+                        )
+                    elif "not_found" in error_msg.lower() or "model" in error_msg.lower():
+                        st.error(
+                            "Model configuration error. Please contact the site administrator."
+                        )
+                    elif "overloaded" in error_msg.lower() or "529" in error_msg:
+                        st.warning(
+                            "The AI service is temporarily overloaded. Please try again in a moment."
                         )
                     else:
                         st.error(
-                            "Something went wrong. Please try again or start a new conversation."
+                            f"Something went wrong ({type(e).__name__}). Please try again or start a new conversation."
                         )
                     import logging
                     logging.error(f"API error: {error_msg}")
