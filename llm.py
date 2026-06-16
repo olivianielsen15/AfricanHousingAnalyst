@@ -60,7 +60,7 @@ def get_response(messages: list[dict], api_key: str) -> str:
             api_messages.append({"role": msg["role"], "content": msg["content"]})
 
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=4096,
         system=SYSTEM_PROMPT,
         messages=api_messages,
