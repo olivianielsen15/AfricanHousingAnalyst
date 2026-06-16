@@ -124,7 +124,17 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                         st.warning(
                             "The service is experiencing high demand. Please wait a moment and try again."
                         )
+                    elif "authentication" in error_msg.lower() or "api key" in error_msg.lower() or "401" in error_msg:
+                        st.error(
+                            "API key issue. Please contact the site administrator."
+                        )
+                    elif "credit" in error_msg.lower() or "billing" in error_msg.lower() or "402" in error_msg:
+                        st.error(
+                            "The service is temporarily out of capacity. Please try again later."
+                        )
                     else:
                         st.error(
                             "Something went wrong. Please try again or start a new conversation."
                         )
+                    import logging
+                    logging.error(f"API error: {error_msg}")
