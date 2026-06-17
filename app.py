@@ -1,5 +1,5 @@
 import streamlit as st
-from llm import get_response
+from llm import get_response_stream
 from hero import get_hero_image_path, PAGE_CSS
 
 st.set_page_config(
@@ -116,10 +116,9 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             )
     else:
         with st.chat_message("assistant"):
-            with st.spinner("Analyzing housing data..."):
+            with st.spinner("Fetching latest data..."):
                 try:
-                    response = get_response(st.session_state.messages, api_key)
-                    st.markdown(response)
+                    response = st.write_stream(get_response_stream(st.session_state.messages, api_key))
                     st.session_state.messages.append(
                         {"role": "assistant", "content": response}
                     )

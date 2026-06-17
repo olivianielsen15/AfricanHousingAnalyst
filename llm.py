@@ -38,7 +38,7 @@ def build_context(user_message: str) -> str:
     return ""
 
 
-def get_response(messages: list[dict], api_key: str) -> str:
+def _build_api_messages(messages: list[dict], api_key: str) -> tuple:
     client = anthropic.Anthropic(api_key=api_key)
 
     last_user_msg = ""
@@ -59,6 +59,11 @@ def get_response(messages: list[dict], api_key: str) -> str:
         else:
             api_messages.append({"role": msg["role"], "content": msg["content"]})
 
+    return client, api_messages
+
+
+def get_response(messages: list[dict], api_key: str) -> str:
+    client, api_messages = _build_api_messages(messages, api_key)
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=4096,
@@ -66,3 +71,15 @@ def get_response(messages: list[dict], api_key: str) -> str:
         messages=api_messages,
     )
     return response.content[0].text
+
+
+def get_response_stream(messages: list[dict], api_key: str):
+    client, api_messages = _build_api_messages(messages, api_key)
+    with client.messages.stream(
+        model="claude-sonnet-4-6",
+        max_tokens=4096,
+        system=SYSTEM_PROMPT,
+        messages=api_messages,
+    ) as stream:
+        for text in stream.text_stream:
+            yield text

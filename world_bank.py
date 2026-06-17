@@ -1,5 +1,7 @@
 import requests
 from typing import Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import lru_cache
 
 BASE_URL = "https://api.worldbank.org/v2"
 
@@ -92,7 +94,7 @@ def fetch_indicator(country_code: str, indicator_code: str, years: int = 5) -> l
     url = f"{BASE_URL}/country/{country_code}/indicator/{indicator_code}"
     params = {"format": "json", "per_page": years, "mrv": years}
     try:
-        resp = requests.get(url, params=params, timeout=10)
+        resp = requests.get(url, params=params, timeout=8)
         resp.raise_for_status()
         data = resp.json()
         if len(data) < 2 or not data[1]:
@@ -106,20 +108,31 @@ def fetch_indicator(country_code: str, indicator_code: str, years: int = 5) -> l
         return []
 
 
-def fetch_country_profile(country_code: str) -> dict:
-    profile = {}
-    for key, indicator_code in INDICATORS.items():
-        data = fetch_indicator(country_code, indicator_code, years=3)
-        if data:
-            profile[key] = data
-    return profile
+@lru_cache(maxsize=128)
+def fetch_country_profile(country_code: str) -> tuple:
+    results = {}
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {
+            executor.submit(fetch_indicator, country_code, ind_code, 3): key
+            for key, ind_code in INDICATORS.items()
+        }
+        for future in as_completed(futures):
+            key = futures[future]
+            try:
+                data = future.result()
+                if data:
+                    results[key] = data
+            except Exception:
+                pass
+    return tuple(sorted(results.items()))
 
 
-def format_profile_for_llm(country_name: str, profile: dict) -> str:
-    if not profile:
+def format_profile_for_llm(country_name: str, profile) -> str:
+    items = profile if isinstance(profile, (list, tuple)) else profile.items()
+    if not items:
         return f"No World Bank data found for {country_name}."
     lines = [f"## World Bank Data for {country_name} (most recent available)\n"]
-    for key, records in profile.items():
+    for key, records in items:
         indicator_code = INDICATORS.get(key, key)
         label = INDICATOR_LABELS.get(indicator_code, key.replace("_", " ").title())
         for r in records:
